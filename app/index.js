@@ -6,11 +6,13 @@ var yosay = require('yosay');
 module.exports = yeoman.generators.Base.extend({
   initializing: function () {
     this.pkg = require('../package.json');
+    console.log("ss1");
   },
 
   prompting: function () {
     var done = this.async();
 
+    console.log("ss2");
     // Have Yeoman greet the user.
     this.log(yosay(
       'Welcome to the great ' + chalk.red('Fyddaben') + ' generator!'
@@ -24,15 +26,17 @@ module.exports = yeoman.generators.Base.extend({
     }];
 
     this.prompt(prompts, function (props) {
-      this.props = props;
-      // To access props later use this.props.someOption;
+        this.props = props;
+        // To access props later use this.props.someOption;
 
-      done();
+        console.log("ss3");
+        done();
     }.bind(this));
   },
 
   writing: {
     app: function () {
+        console.log("ss4");
       this.fs.copy(
         this.templatePath('_package.json'),
         this.destinationPath('package.json')
@@ -44,6 +48,7 @@ module.exports = yeoman.generators.Base.extend({
     },
 
     projectfiles: function () {
+        console.log("ss5");
       this.fs.copy(
         this.templatePath('editorconfig'),
         this.destinationPath('.editorconfig')
@@ -56,6 +61,7 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   install: function () {
+        console.log("ss6");
     this.installDependencies();
   }
 });
