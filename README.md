@@ -2,6 +2,10 @@
 
 > [Yeoman](http://yeoman.io) generator
 
+## ToDoList
+
+- 添加gulp的jshint
+- 学习bower的用法
 
 ## Getting Started
 
