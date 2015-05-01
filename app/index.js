@@ -17,8 +17,8 @@ module.exports = yeoman.generators.Base.extend({
 
         var prompts = [{
             name: 'name',
-            message: '名字?',
-            default:'AppForNobody' 
+            message: '名字',
+            default:'nothing' 
         }];
 
         this.prompt(prompts, function (props) {
@@ -30,24 +30,26 @@ module.exports = yeoman.generators.Base.extend({
 
     writing: function () {
         //复制配置文件
-        this.copy(
+        
+        this.fs.copyTpl(
             this.templatePath('_package.json'),
-            this.destinationPath('package.json')
+            this.destinationPath('package.json'),
+            { name: this.name }
         );
         this.copy(
             this.templatePath('_bower.json'),
             this.destinationPath('bower.json')
         );
         this.copy(
-            this.templatePath('editorconfig'),
+            this.templatePath('_editorconfig'),
             this.destinationPath('.editorconfig')
         );
         this.copy(
-            this.templatePath('jshintrc'),
+            this.templatePath('_jshintrc'),
             this.destinationPath('.jshintrc')
         );
         this.copy(
-            this.templatePath('gulpfile.js'),
+            this.templatePath('_gulpfile.js'),
             this.destinationPath('gulpfile.js')
         ); 
         //复制结果文件
@@ -62,6 +64,7 @@ module.exports = yeoman.generators.Base.extend({
             this.templatePath('app/jsmin/doT.min.js'),
             this.destinationPath('app/jsmin/doT.min.js')
         );
+        
         //复制工作区文件
         mkdirp("build");
         mkdirp("build/less");
@@ -73,23 +76,36 @@ module.exports = yeoman.generators.Base.extend({
             this.destinationPath('build/less/_common/mixin.less')
         );
         this.copy(
-            this.templatePath('build/index.html'),
-            this.destinationPath('build/index.html')
+            this.templatePath('build/javascripts/index.js'),
+            this.destinationPath('build/javascripts/index.js')
         );
-        
-        this.fs.copyTpl(
-            this.templatePath('build/index.html'),
-            this.destinationPath('build/index.html'),
-            { title: this.name }
+        this.copy(
+            this.templatePath('build/less/index.less'),
+            this.destinationPath('build/less/index.less')
         );
         this.copy(
             this.templatePath('build/less/_common/reset.less'),
             this.destinationPath('build/less/_common/reset.less')
         );
- 
+        this.fs.copyTpl(
+            this.templatePath('build/index.html'),
+            this.destinationPath('build/index.html'),
+            { title: this.name }
+        ); 
     },
-
     install: function () {
-        this.installDependencies();
+        //this.installDependencies();
+        console.log("正在安装环境依赖...");
+        var process = require('child_process');
+        process.exec('npm install --registry=https://registry.npm.taobao.org \
+                     --cache=~/.npm/.cache/cnpm \
+                     --disturl=https://npm.taobao.org/dist \
+                     --userconfig=~/.cnpmrc',function(error,stdout,stderr){
+                        if(error!== null){
+                            console.log('exec error: ' + error+",手动执行 npm install 安装吧"); 
+                        }else{
+                            console.log('ok,可以开始工作了');
+                        } 
+                     });
     }
 });
