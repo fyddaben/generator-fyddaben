@@ -1,11 +1,16 @@
-# generator-fyddaben [![Build Status](https://secure.travis-ci.org/fyddaben/generator-fyddaben.png?branch=master)](https://travis-ci.org/fyddaben/generator-fyddaben)
+# generator-fyddaben 
 
 > [Yeoman](http://yeoman.io) generator
 
 ## ToDoList
 
-- 添加gulp的jshint
-- 学习bower的用法
+- 多使用，多完善
+
+## 功能点
+
+- less模块化
+- jshint语法检查
+- requirejs模块编译
 
 ## Getting Started
 
