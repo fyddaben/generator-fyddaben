@@ -56,13 +56,14 @@ module.exports = yeoman.generators.Base.extend({
         mkdirp("app");
         mkdirp("app/cssmin");
         mkdirp("app/jsmin");
+        mkdirp("app/jsmin/_lib");
         this.copy(
-            this.templatePath('app/jsmin/jquery.min.js'),
-            this.destinationPath('app/jsmin/jquery.min.js')
+            this.templatePath('app/jsmin/_lib/jquery.min.js'),
+            this.destinationPath('app/jsmin/_lib/jquery.min.js')
         );
         this.copy(
-            this.templatePath('app/jsmin/doT.min.js'),
-            this.destinationPath('app/jsmin/doT.min.js')
+            this.templatePath('app/jsmin/_lib/doT.min.js'),
+            this.destinationPath('app/jsmin/_lib/doT.min.js')
         );
         
         //复制工作区文件
@@ -70,7 +71,6 @@ module.exports = yeoman.generators.Base.extend({
         mkdirp("build/less");
         mkdirp("build/less/_common");
         mkdirp("build/javascripts");
-        mkdirp("build/javascripts/_libs");
         this.copy(
             this.templatePath('build/less/_common/mixin.less'),
             this.destinationPath('build/less/_common/mixin.less')

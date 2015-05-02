@@ -44,7 +44,7 @@ gulp.task('scripts', function () {
                 skipSemiColonInsertion: true
             };
         }),
-        //uglify(),
+        uglify(),
         rename(function(path){
             path.extname = ".min.js";
 
