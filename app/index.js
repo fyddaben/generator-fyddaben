@@ -17,12 +17,17 @@ module.exports = yeoman.generators.Base.extend({
 
         var prompts = [{
             name: 'name',
-            message: '名字',
+            message: '项目名字？',
             default:'nothing' 
+        },{
+            name: 'css',
+            message: '使用less还是sass？',
+            default:'sass' 
         }];
-
+        
         this.prompt(prompts, function (props) {
             this.name = props.name;
+            this.css = props.css;
             // To access props later use this.props.someOption;
             done();
         }.bind(this));
@@ -34,7 +39,7 @@ module.exports = yeoman.generators.Base.extend({
         this.fs.copyTpl(
             this.templatePath('_package.json'),
             this.destinationPath('package.json'),
-            { name: this.name }
+            { name: this.name, css:this.css }
         );
         this.copy(
             this.templatePath('_bower.json'),
@@ -48,10 +53,11 @@ module.exports = yeoman.generators.Base.extend({
             this.templatePath('_jshintrc'),
             this.destinationPath('.jshintrc')
         );
-        this.copy(
+        this.fs.copyTpl(
             this.templatePath('_gulpfile.js'),
-            this.destinationPath('gulpfile.js')
-        ); 
+            this.destinationPath('gulpfile.js'),
+            { css: this.css }
+        );
         //复制结果文件
         mkdirp("app");
         mkdirp("app/cssmin");
@@ -68,25 +74,45 @@ module.exports = yeoman.generators.Base.extend({
         
         //复制工作区文件
         mkdirp("build");
-        mkdirp("build/less");
-        mkdirp("build/less/_common");
         mkdirp("build/javascripts");
-        this.copy(
-            this.templatePath('build/less/_common/mixin.less'),
-            this.destinationPath('build/less/_common/mixin.less')
-        );
+        if(this.css==='less'){
+            mkdirp("build/less");
+            mkdirp("build/less/_common");
+            this.copy(
+                this.templatePath('build/less/_common/mixin.less'),
+                this.destinationPath('build/less/_common/mixin.less')
+            ); 
+            this.copy(
+                this.templatePath('build/less/index.less'),
+                this.destinationPath('build/less/index.less')
+            );
+            this.copy(
+                this.templatePath('build/less/_common/reset.less'),
+                this.destinationPath('build/less/_common/reset.less')
+            );
+        }else{
+            mkdirp("build/sass");
+            mkdirp("build/sass/_common");
+            this.copy(
+                this.templatePath('build/sass/index.scss'),
+                this.destinationPath('build/sass/index.scss')
+            );
+            this.copy(
+                this.templatePath('build/sass/_common/mixin.scss'),
+                this.destinationPath('build/sass/_common/mixin.scss')
+            );
+            this.copy(
+                this.templatePath('build/sass/_common/reset.scss'),
+                this.destinationPath('build/sass/_common/reset.scss')
+            );
+        }
+        
         this.copy(
             this.templatePath('build/javascripts/index.js'),
             this.destinationPath('build/javascripts/index.js')
         );
-        this.copy(
-            this.templatePath('build/less/index.less'),
-            this.destinationPath('build/less/index.less')
-        );
-        this.copy(
-            this.templatePath('build/less/_common/reset.less'),
-            this.destinationPath('build/less/_common/reset.less')
-        );
+        
+        
         this.fs.copyTpl(
             this.templatePath('build/index.html'),
             this.destinationPath('build/index.html'),
@@ -102,7 +128,7 @@ module.exports = yeoman.generators.Base.extend({
                      --disturl=https://npm.taobao.org/dist \
                      --userconfig=~/.cnpmrc',function(error,stdout,stderr){
                         if(error!== null){
-                            console.log('exec error: ' + error+",手动执行 npm install 安装吧"); 
+                            console.log('exec error: ' + error+",手动执行 cnpm install 安装吧"); 
                         }else{
                             console.log('ok,可以开始工作了');
                         } 

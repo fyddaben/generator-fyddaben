@@ -4,7 +4,13 @@ var gulp = require('gulp');
 
 var uglify = require('gulp-uglify');
 
+    <% if (css=='less') { %> 
 var less = require('gulp-less');
+
+    <% } %>
+    <% if (css=='sass') { %> 
+var sass = require('gulp-sass');
+    <% } %>
 
 var rename = require('gulp-rename');
 
@@ -21,7 +27,12 @@ var fs = require('fs');
 
 var paths = {
     scripts: ['build/javascripts/*.js', '!build/javascripts/_*'],
+    <% if (css=='less') { %> 
     less: ['build/less/*.less', '!build/less/_*'],
+    <% } %>
+    <% if (css=='sass') { %> 
+    sass: ['build/sass/*.scss', '!build/sass/_*'],
+    <% } %>
     destScripts:'app/jsmin',
     destLess:'app/cssmin',
     tmpl:"build/*.html",
@@ -47,7 +58,6 @@ gulp.task('scripts', function () {
         uglify(),
         rename(function(path){
             path.extname = ".min.js";
-
         }),
         gulp.dest(paths.destScripts),
         rename(function(path){
@@ -74,6 +84,7 @@ gulp.task('scripts', function () {
 
 });
 
+    <% if (css=='less') { %> 
 gulp.task('less', function () {
 
     var combined = combiner.obj([
@@ -91,6 +102,28 @@ gulp.task('less', function () {
     combined.on('error', console.error.bind(console));
     return combined;
 });
+
+    <% } %>
+    <% if (css=='sass') { %> 
+gulp.task('sass', function () {
+
+    var combined = combiner.obj([
+        gulp.src(paths.sass), sass(),
+        minifyCSS(),
+        rename(function(path){
+            path.extname = ".min.css"
+        }),
+        gulp.dest(paths.destLess)
+
+    ]);
+    // any errors in the above streams will get caught
+    // by this listener, instead of being thrown:
+    combined.on('error', console.error.bind(console));
+    return combined;
+});
+
+    <% } %>
+
 
 gulp.task('tmpl', function () {
 
@@ -112,9 +145,19 @@ gulp.task('tmpl', function () {
 gulp.task('watch', function () {
 
     gulp.watch(paths.scripts, ['scripts']);
+    <% if (css=='less') { %> 
     gulp.watch(paths.less, ['less']);
+    <% } %>
+    <% if (css=='sass') { %> 
+    gulp.watch(paths.sass, ['sass']);
+    <% } %>
     gulp.watch(paths.tmpl, ['tmpl']);
 });
 // The default task (called when you run `gulp` from cli)
+    <% if (css=='less') { %> 
 gulp.task('default', ['scripts','tmpl','less','watch']);
+    <% } %>
+    <% if (css=='sass') { %> 
+gulp.task('default', ['scripts','tmpl','sass','watch']);
+    <% } %>
 

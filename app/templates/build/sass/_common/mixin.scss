@@ -1,0 +1,274 @@
+@mixin tab-focus() {
+  // Default
+  outline: thin dotted #333;
+  // Webkit
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+// 块级元素居中
+// ----------------------------------
+@mixin center-block() {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// IE7 inline-block HACK处理
+// ----------------
+@mixin ie7-inline-block() {
+  *display: inline; /* IE7 inline-block hack */
+  *zoom: 1;
+}
+
+//text垂直居中
+@mixin middleHight($height){
+    height:$height;
+    line-height:$height;
+}
+// 快速定义SIZE
+// -------------------------
+@mixin size($height, $width) {
+  width: $width;
+  height: $height;
+}
+@mixin square($size) {
+  @include size($size, $size);
+}
+
+// Placeholder 属性文本颜色
+// -------------------------
+@mixin placeholder($color: $placeholderText) {
+  &:-moz-placeholder {
+    color: $color;
+  }
+  &:-ms-input-placeholder {
+    color: $color;
+  }
+  &::-webkit-input-placeholder {
+    color: $color;
+  }
+}
+
+// Text overflow 兼容性处理
+// -------------------------
+@mixin text-overflow() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+// CSS3 属性
+// --------------------------------------------------
+
+// 圆角边框
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+          border-radius: $radius;
+}
+
+// 单圆角半径
+@mixin border-top-left-radius($radius) {
+  -webkit-border-top-left-radius: $radius;
+      -moz-border-radius-topleft: $radius;
+          border-top-left-radius: $radius;
+}
+@mixin border-top-right-radius($radius) {
+  -webkit-border-top-right-radius: $radius;
+      -moz-border-radius-topright: $radius;
+          border-top-right-radius: $radius;
+}
+@mixin border-bottom-right-radius($radius) {
+  -webkit-border-bottom-right-radius: $radius;
+      -moz-border-radius-bottomright: $radius;
+          border-bottom-right-radius: $radius;
+}
+@mixin border-bottom-left-radius($radius) {
+  -webkit-border-bottom-left-radius: $radius;
+      -moz-border-radius-bottomleft: $radius;
+          border-bottom-left-radius: $radius;
+}
+
+// 单圆角半径
+@mixin border-top-radius($radius) {
+  @include border-top-right-radius($radius);
+  @include border-top-left-radius($radius);
+}
+@mixin border-right-radius($radius) {
+  @include border-top-right-radius($radius);
+  @include border-bottom-right-radius($radius);
+}
+@mixin border-bottom-radius($radius) {
+  @include border-bottom-right-radius($radius);
+  @include border-bottom-left-radius($radius);
+}
+@mixin border-left-radius($radius) {
+  @include border-top-left-radius($radius);
+  @include border-bottom-left-radius($radius);
+}
+
+// box-shadows
+@mixin box-shadow($shadow) {
+  -webkit-box-shadow: $shadow;
+     -moz-box-shadow: $shadow;
+          box-shadow: $shadow;
+}
+
+// Transitions-过渡
+@mixin transition($transition) {
+  -webkit-transition: $transition;
+     -moz-transition: $transition;
+       -o-transition: $transition;
+          transition: $transition;
+}
+@mixin transition-delay($transition-delay) {
+  -webkit-transition-delay: $transition-delay;
+     -moz-transition-delay: $transition-delay;
+       -o-transition-delay: $transition-delay;
+          transition-delay: $transition-delay;
+}
+@mixin transition-duration($transition-duration) {
+  -webkit-transition-duration: $transition-duration;
+     -moz-transition-duration: $transition-duration;
+       -o-transition-duration: $transition-duration;
+          transition-duration: $transition-duration;
+}
+
+// Transformations-转换
+@mixin rotate($degrees) {
+  -webkit-transform: rotate($degrees);
+     -moz-transform: rotate($degrees);
+      -ms-transform: rotate($degrees);
+       -o-transform: rotate($degrees);
+          transform: rotate($degrees);
+}
+@mixin scale($ratio) {
+  -webkit-transform: scale($ratio);
+     -moz-transform: scale($ratio);
+      -ms-transform: scale($ratio);
+       -o-transform: scale($ratio);
+          transform: scale($ratio);
+}
+@mixin translate($x, $y) {
+  -webkit-transform: translate($x, $y);
+     -moz-transform: translate($x, $y);
+      -ms-transform: translate($x, $y);
+       -o-transform: translate($x, $y);
+          transform: translate($x, $y);
+}
+@mixin skew($x, $y) {
+  -webkit-transform: skew($x, $y);
+     -moz-transform: skew($x, $y);
+      -ms-transform: skewX($x) skewY($y); // See https://github.com/twitter/bootstrap/issues/4885
+       -o-transform: skew($x, $y);
+          transform: skew($x, $y);
+  -webkit-backface-visibility: hidden; // See https://github.com/twitter/bootstrap/issues/5319
+}
+@mixin translate3d($x, $y, $z) {
+  -webkit-transform: translate3d($x, $y, $z);
+     -moz-transform: translate3d($x, $y, $z);
+       -o-transform: translate3d($x, $y, $z);
+          transform: translate3d($x, $y, $z);
+}
+
+// 规定是否可由用户调整元素尺寸
+@mixin resizable($direction) {
+  resize: $direction; // 参数: horizontal, vertical, both
+  overflow: auto; // Safari fix
+}
+
+
+// Opacity
+@mixin opacity($opacity) {
+  opacity: $opacity / 100;
+  filter: "~alpha(opacity={$opacity})";
+}
+
+
+
+// 背景
+// --------------------------------------------------
+
+
+
+// 背景色或边框半透明
+ #translucent {
+  @mixin background($color: $white, $alpha: 1) {
+    background-color: hsla(hue($color), saturation($color), lightness($color), $alpha);
+  }
+  @mixin border($color: $white, $alpha: 1) {
+    border-color: hsla(hue($color), saturation($color), lightness($color), $alpha);
+    @include background-clip(padding-box);
+  }
+}
+
+
+// 渐变
+/// Test if `$value` is a valid direction
+/// @param {*} $value - Value to test
+/// @return {Bool}
+@function is-direction($value) {
+  $is-keyword: index((to top, to top right, to right top, to right, to bottom right, to right bottom, to bottom, to bottom left, to left bottom, to left, to left top, to top left), $value);
+  $is-angle: type-of($value) == 'number' and index('deg' 'grad' 'turn' 'rad', unit($value));
+
+  @return $is-keyword or $is-angle;
+}
+
+/// Convert a direction to legacy syntax
+/// @param {Keyword | Angle} $value - Value to convert
+/// @require {function} is-direction
+/// @require {function} convert-angle
+/// @throw Cannot convert `#{$value}` to legacy syntax because it doesn't seem to be a direction.;
+@function legacy-direction($value) {
+  @if is-direction($value) == false {
+    @error "Cannot convert `#{$value}` to legacy syntax because it doesn't seem to be a direction.";
+  }
+
+  $conversion-map: (
+    to top          : bottom,
+    to top right    : bottom left,
+    to right top    : left bottom,
+    to right        : left,
+    to bottom right : top left,
+    to right bottom : left top,
+    to bottom       : top,
+    to bottom left  : top right,
+    to left bottom  : right top,
+    to left         : right,
+    to left top     : right bottom,
+    to top left     : bottom right
+  );
+
+  @if map-has-key($conversion-map, $value) {
+    @return map-get($conversion-map, $value);
+  }
+
+  @return 90deg - $value;
+}
+
+@mixin linear-gradient($direction, $color-stops...) {
+  // Direction has been omitted and happens to be a color-stop
+  @if is-direction($direction) == false {
+    $color-stops: $direction, $color-stops;
+    $direction: 180deg;
+  }
+
+  background: nth(nth($color-stops, 1), 1);
+  background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
+  background: linear-gradient($direction, $color-stops);
+}
+
+@mixin clearfix() {
+    *zoom: 1;
+    &:before,
+    &:after {
+        display: table;
+        content: "";
+        line-height: 0;
+    }
+    &:after {
+        clear: both;
+    }
+}

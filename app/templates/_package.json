@@ -1,5 +1,5 @@
 {
-    "name": "webgl",
+    "name": "<%= name %>",
     "version": "0.0.0",
     "dependencies": {
         "stream-combiner2": "^1.0.2",
@@ -10,6 +10,11 @@
         "jshint-stylish": "^1.0.1",
         "gulp-jshint": "^1.10.0",
         "gulp-requirejs-optimize": "^0.1.3",
+    <% if (css=='sass') { %> 
+        "gulp-sass": "^2.0.1"
+    <% } %>
+    <% if (css=='less') { %> 
         "gulp-less": "^3.0.2"
+    <% } %>
     }
 }
