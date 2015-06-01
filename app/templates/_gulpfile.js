@@ -24,6 +24,7 @@ var requirejsOptimize = require('gulp-requirejs-optimize');
 
 var fs = require('fs');
 
+var md5 = require("gulp-md5-assets");
 
 var paths = {
     scripts: ['build/javascripts/*.js', '!build/javascripts/_*'],
@@ -38,7 +39,18 @@ var paths = {
     tmpl:"build/*.html",
     destTmpl:"app"
 };
+var gulp_md5= {
+    css:function(){
+        gulp.src(paths.destLess+"/*.css")
+        .pipe(md5(10,'./app/*.html'))
+    },
+    js:function(){
 
+        gulp.src(paths.destScripts+"/*.js")
+        .pipe(md5(10,'./app/*.html'))
+
+    }
+};
 
 gulp.task('scripts', function () {
 
@@ -139,6 +151,14 @@ gulp.task('tmpl', function () {
     // any errors in the above streams will get caught
     // by this listener, instead of being thrown:
     combined.on('error', console.error.bind(console));
+    
+    combined.on('end',function(){
+        gulp_md5.css();
+        gulp_md5.js();
+    });
+
+
+
     return combined;
 });
 
@@ -152,12 +172,12 @@ gulp.task('watch', function () {
     gulp.watch(paths.sass, ['sass']);
     <% } %>
     gulp.watch(paths.tmpl, ['tmpl']);
+    
+    gulp.watch(paths.destLess+'/*.css',['tmpl']);
+
+    gulp.watch(paths.destScripts+'/*.js',['tmpl']);
+
 });
 // The default task (called when you run `gulp` from cli)
-    <% if (css=='less') { %> 
-gulp.task('default', ['scripts','tmpl','less','watch']);
-    <% } %>
-    <% if (css=='sass') { %> 
-gulp.task('default', ['scripts','tmpl','sass','watch']);
-    <% } %>
+gulp.task('default', ['tmpl','watch']);
 

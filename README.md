@@ -11,6 +11,44 @@
 - less,sass选择
 - jshint语法检查
 - requirejs模块编译
+- 增加`js,css`的`md5`版本号
+
+## 注意点
+### 1.安装方式
+> 由于npm 的上传，自己没有经常更新，请不用用`npm instal -g generator-fyddaben`的方式安装
+
+- 采用 `cd generator-fyddaben`
+- 然后 `sudo npm install`
+- 然后 `sudo npm link`
+
+### 2.目录等级
+```
+├── app
+│   ├── cssmin
+│   ├── index.html
+│   └── jsmin
+├── bower.json
+├── build
+│   ├── index.html
+│   ├── javascripts
+│   └── sass
+├── gulpfile.js
+├── node_modules
+│   ├── gulp
+│   ├── gulp-jshint
+│   ├── gulp-md5-assets
+│   ├── gulp-minify-css
+│   ├── gulp-rename
+│   ├── gulp-requirejs-optimize
+│   ├── gulp-sass
+│   ├── gulp-uglify
+│   ├── jshint-stylish
+│   └── stream-combiner2
+└── package.json
+```
+- `app`目录为访问地址,即非编辑区域，禁止编辑这个目录下的文件,生成后的区域
+- `build`目录为源文件地址，即编辑区域
+
 
 ## Getting Started
 
