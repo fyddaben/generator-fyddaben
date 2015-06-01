@@ -8,7 +8,7 @@
 
 ## 功能点
 
-- less模块化
+- less,sass选择
 - jshint语法检查
 - requirejs模块编译
 
