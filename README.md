@@ -4,7 +4,8 @@
 
 ## ToDoList
 
-- 多使用，多完善
+- 加入postcss.
+- 加入jsx的编译选择，利用gulp-bowerify
 
 ## 功能点
 
