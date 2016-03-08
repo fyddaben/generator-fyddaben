@@ -24,12 +24,12 @@
 
 ### 2.目录等级
 ```
-├── app
+├── build 
 │   ├── cssmin
 │   ├── index.html
 │   └── jsmin
 ├── bower.json
-├── build
+├── app
 │   ├── index.html
 │   ├── javascripts
 │   └── sass
