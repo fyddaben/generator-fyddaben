@@ -58,64 +58,69 @@ module.exports = yeoman.generators.Base.extend({
             this.destinationPath('gulpfile.js'),
             { css: this.css }
         );
+        var _src = '_app';
+        var _tar = '_build';
+        var src = 'app';
+        var tar = 'build';
+
         //复制结果文件
-        mkdirp("app");
-        mkdirp("app/cssmin");
-        mkdirp("app/jsmin");
-        mkdirp("app/jsmin/_lib");
+        mkdirp(tar);
+        mkdirp(tar + "/cssmin");
+        mkdirp(tar + "/jsmin");
+        mkdirp(tar + "/jsmin/_lib");
         this.copy(
-            this.templatePath('app/jsmin/_lib/jquery.min.js'),
-            this.destinationPath('app/jsmin/_lib/jquery.min.js')
+            this.templatePath(_tar + '/jsmin/_lib/jquery.min.js'),
+            this.destinationPath(tar + '/jsmin/_lib/jquery.min.js')
         );
         this.copy(
-            this.templatePath('app/jsmin/_lib/doT.min.js'),
-            this.destinationPath('app/jsmin/_lib/doT.min.js')
+            this.templatePath(_tar + '/jsmin/_lib/doT.min.js'),
+            this.destinationPath(tar + '/jsmin/_lib/doT.min.js')
         );
         
         //复制工作区文件
-        mkdirp("build");
-        mkdirp("build/javascripts");
+        mkdirp(src);
+        mkdirp(src + "/javascripts");
         if(this.css==='less'){
-            mkdirp("build/less");
-            mkdirp("build/less/_common");
+            mkdirp(src + "/less");
+            mkdirp(src + "/less/_common");
             this.copy(
-                this.templatePath('build/less/_common/mixin.less'),
-                this.destinationPath('build/less/_common/mixin.less')
+                this.templatePath(_src + '/less/_common/mixin.less'),
+                this.destinationPath(src + '/less/_common/mixin.less')
             ); 
             this.copy(
-                this.templatePath('build/less/index.less'),
-                this.destinationPath('build/less/index.less')
+                this.templatePath(_src + '/less/index.less'),
+                this.destinationPath(src + '/less/index.less')
             );
             this.copy(
-                this.templatePath('build/less/_common/reset.less'),
-                this.destinationPath('build/less/_common/reset.less')
+                this.templatePath(_src + '/less/_common/reset.less'),
+                this.destinationPath(src + '/less/_common/reset.less')
             );
         }else{
-            mkdirp("build/sass");
-            mkdirp("build/sass/_common");
+            mkdirp(src + "/sass");
+            mkdirp(src + "/sass/_common");
             this.copy(
-                this.templatePath('build/sass/index.scss'),
-                this.destinationPath('build/sass/index.scss')
+                this.templatePath(_src + '/sass/index.scss'),
+                this.destinationPath(src + '/sass/index.scss')
             );
             this.copy(
-                this.templatePath('build/sass/_common/mixin.scss'),
-                this.destinationPath('build/sass/_common/mixin.scss')
+                this.templatePath(_src + '/sass/_common/mixin.scss'),
+                this.destinationPath(src + '/sass/_common/mixin.scss')
             );
             this.copy(
-                this.templatePath('build/sass/_common/reset.scss'),
-                this.destinationPath('build/sass/_common/reset.scss')
+                this.templatePath(_src + '/sass/_common/reset.scss'),
+                this.destinationPath(src + '/sass/_common/reset.scss')
             );
         }
         
         this.copy(
-            this.templatePath('build/javascripts/index.js'),
-            this.destinationPath('build/javascripts/index.js')
+            this.templatePath(_src + '/javascripts/index.js'),
+            this.destinationPath(src + '/javascripts/index.js')
         );
         
         
         this.fs.copyTpl(
-            this.templatePath('build/index.html'),
-            this.destinationPath('build/index.html'),
+            this.templatePath(_src + '/index.html'),
+            this.destinationPath(src + '/index.html'),
             { title: this.name }
         ); 
     },

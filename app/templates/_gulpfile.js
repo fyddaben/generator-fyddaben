@@ -26,28 +26,31 @@ var fs = require('fs');
 
 var md5 = require("gulp-md5-assets");
 
+var _src = 'app';
+var _tar = 'build';
+
 var paths = {
-    scripts: ['build/javascripts/*.js', '!build/javascripts/_*'],
+    scripts: [_src + '/javascripts/*.js', '!' + _src +'/javascripts/_*'],
     <% if (css=='less') { %> 
-    less: ['build/less/*.less', '!build/less/_*'],
+    less: [_src + '/less/*.less', '!' + _src +'/less/_*'],
     <% } %>
     <% if (css=='sass') { %> 
-    sass: ['build/sass/*.scss', '!build/sass/_*'],
+    sass: [_src + '/sass/*.scss', '!' + _src +'/sass/_*'],
     <% } %>
-    destScripts:'app/jsmin',
-    destLess:'app/cssmin',
-    tmpl:"build/*.html",
-    destTmpl:"app"
+    destScripts:_tar + '/jsmin',
+    destLess:_tar + '/cssmin',
+    tmpl:_src + "/*.html",
+    destTmpl:_tar
 };
 var gulp_md5= {
     css:function(){
         gulp.src(paths.destLess+"/*.css")
-        .pipe(md5(10,'./app/*.html'))
+        .pipe(md5(10,'./'+_tar+'/*.html'))
     },
     js:function(){
 
         gulp.src(paths.destScripts+"/*.js")
-        .pipe(md5(10,'./app/*.html'))
+        .pipe(md5(10,'./'+_tar+'/*.html'))
 
     }
 };
