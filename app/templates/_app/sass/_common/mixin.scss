@@ -272,3 +272,23 @@
         clear: both;
     }
 }
+
+@function _($px, $base-font-size: 100px) {
+    @if (unitless($px)) {
+        @return _($px + 0px);
+    }
+    @return ($px / $base-font-size) * 1rem;
+}
+
+$m: './img/';
+@mixin bg($name, $left:center, $top: center, $m: $m) {
+    background-repeat: no-repeat;
+    background-image: url($m + $name + '.jpg');
+    background-position: $left $top;
+}
+
+@mixin bng($name, $left:center, $top: center, $m: $m) {
+    background-repeat: no-repeat;
+    background-image: url($m + $name + '.png');
+    background-position: $left $top;
+}

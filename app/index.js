@@ -10,9 +10,10 @@ module.exports = yeoman.generators.Base.extend({
 
     prompting: function () {
         var done = this.async();
+
         // Have Yeoman greet the user.
         this.log(yosay(
-            'Welcome to the great ' + chalk.red('Fyddaben') + ' generator!'
+            'Welcome to the great ' + chalk.red('fyddaben') + ' generator!'
         ));
 
         var prompts = [{
@@ -23,45 +24,53 @@ module.exports = yeoman.generators.Base.extend({
             name: 'css',
             message: '使用less还是sass？',
             default:'sass' 
+        },{
+            name: 'pf',
+            message: 'm端还是pc端？',
+            default:'pc' 
         }];
         
         this.prompt(prompts, function (props) {
             this.name = props.name;
             this.css = props.css;
+            this.pf = props.pf;
+            
             // To access props later use this.props.someOption;
             done();
         }.bind(this));
     },
 
     writing: function () {
+        // 首先建立文件夹
+        mkdirp(this.name);  
+
         //复制配置文件
-        
         this.fs.copyTpl(
             this.templatePath('_package.json'),
-            this.destinationPath('package.json'),
+            this.destinationPath(this.name + '/package.json'),
             { name: this.name, css:this.css }
         );
         this.copy(
             this.templatePath('_bower.json'),
-            this.destinationPath('bower.json')
+            this.destinationPath(this.name + '/bower.json')
         );
         this.copy(
             this.templatePath('_editorconfig'),
-            this.destinationPath('.editorconfig')
+            this.destinationPath(this.name + '/.editorconfig')
         );
         this.copy(
             this.templatePath('_jshintrc'),
-            this.destinationPath('.jshintrc')
+            this.destinationPath(this.name + '/.jshintrc')
         );
         this.fs.copyTpl(
             this.templatePath('_gulpfile.js'),
-            this.destinationPath('gulpfile.js'),
+            this.destinationPath(this.name + '/gulpfile.js'),
             { css: this.css }
         );
         var _src = '_app';
         var _tar = '_build';
-        var src = 'app';
-        var tar = 'build';
+        var src = this.name + '/app';
+        var tar = this.name + '/dist';
 
         //复制结果文件
         mkdirp(tar);
@@ -117,26 +126,39 @@ module.exports = yeoman.generators.Base.extend({
             this.destinationPath(src + '/javascripts/index.js')
         );
         
-        
-        this.fs.copyTpl(
-            this.templatePath(_src + '/index.html'),
-            this.destinationPath(src + '/index.html'),
-            { title: this.name }
-        ); 
+        if (this.pf == 'pc') {
+            this.fs.copyTpl(
+                this.templatePath(_src + '/index.html'),
+                this.destinationPath(src + '/index.html'),
+                { title: this.name }
+            ); 
+        } else {
+            this.fs.copyTpl(
+                this.templatePath(_src + '/mobile.html'),
+                this.destinationPath(src + '/mobile.html'),
+                { title: this.name }
+            ); 
+        }
     },
     install: function () {
         //this.installDependencies();
         console.log("正在安装环境依赖...");
         var process = require('child_process');
-        process.exec('npm install --registry=https://registry.npm.taobao.org \
-                     --cache=~/.npm/.cache/cnpm \
-                     --disturl=https://npm.taobao.org/dist \
-                     --userconfig=~/.cnpmrc',function(error,stdout,stderr){
-                        if(error!== null){
-                            console.log('exec error: ' + error+",手动执行 cnpm install 安装吧"); 
-                        }else{
-                            console.log('ok,可以开始工作了');
-                        } 
-                     });
+        
+        var child = process.exec('cd ' + this.name + ' && npm install \
+                                 --registry=https://registry.npm.taobao.org \
+                                 --cache=~/.npm/.cache/cnpm \
+                                 --disturl=https://npm.taobao.org/dist \
+                                 --userconfig=~/.cnpmrc');
+        child.stdout.on('data', function(data) {
+            console.log('out: ' + data);
+        });
+        child.stderr.on('data', function(data) {
+            console.log('warn: ' + data);
+        });
+        child.on('close', function(code) {
+            console.log('ok,可以开始工作了');
+        });
+
     }
 });

@@ -4,13 +4,10 @@ var gulp = require('gulp');
 
 var uglify = require('gulp-uglify');
 
-    <% if (css=='less') { %> 
-var less = require('gulp-less');
 
-    <% } %>
-    <% if (css=='sass') { %> 
+
 var sass = require('gulp-sass');
-    <% } %>
+
 
 var rename = require('gulp-rename');
 
@@ -27,16 +24,13 @@ var fs = require('fs');
 var md5 = require("gulp-md5-assets");
 
 var _src = 'app';
-var _tar = 'build';
-
+var _tar = 'dist';
 var paths = {
     scripts: [_src + '/javascripts/*.js', '!' + _src +'/javascripts/_*'],
-    <% if (css=='less') { %> 
-    less: [_src + '/less/*.less', '!' + _src +'/less/_*'],
-    <% } %>
-    <% if (css=='sass') { %> 
+
+
     sass: [_src + '/sass/*.scss', '!' + _src +'/sass/_*'],
-    <% } %>
+
     destScripts:_tar + '/jsmin',
     destLess:_tar + '/cssmin',
     tmpl:_src + "/*.html",
@@ -44,6 +38,7 @@ var paths = {
 };
 var gulp_md5= {
     css:function(){
+        console.log('start md5');
         gulp.src(paths.destLess+"/*.css")
         .pipe(md5(10,'./'+_tar+'/*.html'))
     },
@@ -99,27 +94,8 @@ gulp.task('scripts', function () {
 
 });
 
-    <% if (css=='less') { %> 
-gulp.task('less', function () {
 
-    var combined = combiner.obj([
-        gulp.src(paths.less), less(),
-        minifyCSS(),
-        rename(function(path){
-            path.extname = ".min.css"
-        }),
-        gulp.dest(paths.destLess)
 
-    ]);
-
-    // any errors in the above streams will get caught
-    // by this listener, instead of being thrown:
-    combined.on('error', console.error.bind(console));
-    return combined;
-});
-
-    <% } %>
-    <% if (css=='sass') { %> 
 gulp.task('sass', function () {
 
     var combined = combiner.obj([
@@ -137,7 +113,7 @@ gulp.task('sass', function () {
     return combined;
 });
 
-    <% } %>
+
 
 
 gulp.task('tmpl', function () {
@@ -154,7 +130,7 @@ gulp.task('tmpl', function () {
     // any errors in the above streams will get caught
     // by this listener, instead of being thrown:
     combined.on('error', console.error.bind(console));
-    
+
     combined.on('end',function(){
         gulp_md5.css();
         gulp_md5.js();
@@ -168,14 +144,12 @@ gulp.task('tmpl', function () {
 gulp.task('watch', function () {
 
     gulp.watch(paths.scripts, ['scripts']);
-    <% if (css=='less') { %> 
-    gulp.watch(paths.less, ['less']);
-    <% } %>
-    <% if (css=='sass') { %> 
+
+
     gulp.watch(paths.sass, ['sass']);
-    <% } %>
+
     gulp.watch(paths.tmpl, ['tmpl']);
-    
+
     gulp.watch(paths.destLess+'/*.css',['tmpl']);
 
     gulp.watch(paths.destScripts+'/*.js',['tmpl']);
@@ -186,8 +160,9 @@ gulp.task('default', ['tmpl','watch']);
 
 var connect = require('connect');
 var serveStatic = require('serve-static');
-connect().use(serveStatic(__dirname + '/app/')).listen(8080, function(){
-    console.log('Server running on 8080..., Please edit build dir');
+console.log(__dirname + '/' + _tar + '/');
+connect().use(serveStatic(__dirname + '/' + _tar + '/')).listen(8080, function(){
+    console.log('Server running on 8080..., Please edit app dir');
 });
 
 

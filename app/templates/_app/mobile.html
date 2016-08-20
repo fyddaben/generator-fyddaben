@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN" data-use-rem="720">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>bbs</title>
+    <meta name="description" content="" />
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="full-screen" content="yes">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="browsermode" content="application">
+    <meta name="x5-page-mode" content="app">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="./cssmin/index.min.css" />
+    <script>
+        // 屏幕适配方案
+        (function (win){
+          var doc = win.document,
+              html = doc.documentElement,
+              option = html.getAttribute('data-use-rem');
+
+          if( option === null ) return;
+
+          // defaut 640px；
+          var baseWidth = parseInt(option).toString() == 'NaN' ? 640 : parseInt(option),
+              grids = baseWidth / 100,
+              resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize',
+              recalc = function(){
+                // default to 320
+                var clientWidth = html.clientWidth || 320;
+                html.style.fontSize = clientWidth / grids + 'px';
+              };
+          // Abort if browser does not support addEventListener
+          if (!doc.addEventListener) return;
+          win.addEventListener(resizeEvt, recalc, false);
+          doc.addEventListener('DOMContentLoaded', recalc, false);
+        })(window);
+    </script>
+</head>
+<body>
+    hello mobile
+    <script src="./jsmin/_lib/jquery.min.js"></script>
+    <script src="./jsmin/index.min.js"></script>
+</body>
+</html>
