@@ -5,32 +5,31 @@
 ## ToDoList
 
 - 加入postcss.
-- 加入jsx的编译选择，利用gulp-bowerify
 
 ## 功能点
 
 - less,sass选择
 - jshint语法检查
 - requirejs模块编译
+- 静态服务器,在`dist`目录
+- m 端页面
 - 增加`js,css`的`md5`版本号
 
 ## 注意点
 ### 1.安装方式
-> 由于npm 的上传，自己没有经常更新，请不用用`npm instal -g generator-fyddaben`的方式安装
 
-- 采用 `cd generator-fyddaben`
-- 然后 `sudo npm install`
-- 然后 `sudo npm link`
+> `npm instal -g generator-fyddaben`
 
 ### 2.目录等级
 ```
-├── build 
+├── dist 
 │   ├── cssmin
 │   ├── index.html
 │   └── jsmin
 ├── bower.json
 ├── app
 │   ├── index.html
+│   ├── mobile.html
 │   ├── javascripts
 │   └── sass
 ├── gulpfile.js
@@ -47,9 +46,13 @@
 │   └── stream-combiner2
 └── package.json
 ```
-- `app`目录为访问地址,即非编辑区域，禁止编辑这个目录下的文件,生成后的区域
-- `build`目录为源文件地址，即编辑区域
+- `dist`目录为访问地址,即非编辑区域，禁止编辑这个目录下的文件,生成后的区域
+- `app`目录为源文件地址，即编辑区域
 
+### 3. 手机端编辑方式
+
+- 默认设计稿宽度为`640`,可以修改页面的`data-use-rem`属性
+- 单位书写方式`20px`,修改为`_(20)` 
 
 ## Getting Started
 
