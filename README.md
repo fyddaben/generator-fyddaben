@@ -4,11 +4,9 @@
 
 ## ToDoList
 
-- 加入postcss.
-
 ## 功能点
 
-- less,sass选择
+- cssnext,sass选择
 - jshint语法检查
 - requirejs模块编译
 - 静态服务器,在`dist`目录

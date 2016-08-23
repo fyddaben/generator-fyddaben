@@ -4,14 +4,8 @@ var gulp = require('gulp');
 
 var uglify = require('gulp-uglify');
 
-
-
-var sass = require('gulp-sass');
-
-
 var rename = require('gulp-rename');
 
-var minifyCSS = require('gulp-minify-css');
 
 var jshint = require('gulp-jshint');
 
@@ -30,6 +24,7 @@ var paths = {
 
 
     sass: [_src + '/sass/*.scss', '!' + _src +'/sass/_*'],
+    css: [_src + '/css/*.css', '!' + _src +'/css/_*'],
 
     destScripts:_tar + '/jsmin',
     destLess:_tar + '/cssmin',
@@ -95,25 +90,55 @@ gulp.task('scripts', function () {
 });
 
 
+    <% if (css=='sass') { %> 
 
-gulp.task('sass', function () {
+    var sass = require('gulp-sass');
+    
+    var minifyCSS = require('gulp-minify-css');
+    
+    gulp.task('sass', function () {
+    
+        var combined = combiner.obj([
+            gulp.src(paths.sass), sass(),
+            minifyCSS(),
+            rename(function(path){
+                path.extname = ".min.css"
+            }),
+            gulp.dest(paths.destLess)
+    
+        ]);
+        // any errors in the above streams will get caught
+        // by this listener, instead of being thrown:
+        combined.on('error', console.error.bind(console));
+        return combined;
+    });
 
-    var combined = combiner.obj([
-        gulp.src(paths.sass), sass(),
-        minifyCSS(),
-        rename(function(path){
-            path.extname = ".min.css"
-        }),
-        gulp.dest(paths.destLess)
-
-    ]);
-    // any errors in the above streams will get caught
-    // by this listener, instead of being thrown:
-    combined.on('error', console.error.bind(console));
-    return combined;
-});
-
-
+    <% } %>
+    <% if (css=='cssnext') { %> 
+    var postcss = require('gulp-postcss');
+    gulp.task('css', function () {
+        var combined = combiner.obj([
+            gulp.src(paths.css),
+            postcss([
+                require("postcss-import")(),
+                require("postcss-mixins")(),
+                require("postcss-simple-vars")(),
+                require("postcss-nesting")(),
+                require("postcss-cssnext")({
+                  warnForDuplicates: false
+                }),
+                require("cssnano")()
+            ]),
+            rename(function(path){
+                path.extname = ".min.css";
+            }),
+            gulp.dest(paths.destLess)
+        ]);
+    
+        combined.on('error', console.error.bind(console));
+        return combined;
+    });
+    <% } %>
 
 
 gulp.task('tmpl', function () {
@@ -145,8 +170,13 @@ gulp.task('watch', function () {
 
     gulp.watch(paths.scripts, ['scripts']);
 
+    <% if (css=='cssnext') { %> 
+    gulp.watch(paths.css, ['css']);
+    <% } %>
 
+    <% if (css=='sass') { %> 
     gulp.watch(paths.sass, ['sass']);
+    <% } %>
 
     gulp.watch(paths.tmpl, ['tmpl']);
 

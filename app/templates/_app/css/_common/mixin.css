@@ -1,0 +1,44 @@
+@define-mixin center-block{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+@define-mixin placeholder $color{
+    &:-moz-placeholder {
+        color: $color;
+    }
+    &:-ms-input-placeholder {
+        color: $color;
+    }
+    &::-webkit-input-placeholder {
+        color: $color;
+    }
+}
+@define-mixin clearfix{
+    *zoom: 1;
+    &:before,
+    &:after {
+        display: table;
+        content: "";
+        line-height: 0;
+    }
+    &:after {
+        clear: both;
+    }
+}
+$m: ./img;
+@define-mixin bg $name, $left:center,$top:center, $img:$m{
+    background-repeat: no-repeat;
+    background-image: url($(img)/$(name).jpg);
+    background-position: $left $top;
+}
+@define-mixin bng $name, $left:center,$top:center, $img:$m{
+    background-repeat: no-repeat;
+    background-image: url($(img)/$(name).png);
+    background-position: $left $top;
+}
+
+
+
+
+

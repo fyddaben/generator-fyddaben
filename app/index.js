@@ -22,7 +22,7 @@ module.exports = yeoman.generators.Base.extend({
             default:'nothing' 
         },{
             name: 'css',
-            message: '使用less还是sass？',
+            message: '使用cssnext还是sass？',
             default:'sass' 
         },{
             name: 'pf',
@@ -89,22 +89,23 @@ module.exports = yeoman.generators.Base.extend({
         //复制工作区文件
         mkdirp(src);
         mkdirp(src + "/javascripts");
-        if(this.css==='less'){
-            mkdirp(src + "/less");
-            mkdirp(src + "/less/_common");
+        if(this.css==='cssnext'){
+            mkdirp(src + "/css");
+            mkdirp(src + "/css/_common");
             this.copy(
-                this.templatePath(_src + '/less/_common/mixin.less'),
-                this.destinationPath(src + '/less/_common/mixin.less')
+                this.templatePath(_src + '/css/_common/mixin.css'),
+                this.destinationPath(src + '/css/_common/mixin.css')
             ); 
             this.copy(
-                this.templatePath(_src + '/less/index.less'),
-                this.destinationPath(src + '/less/index.less')
+                this.templatePath(_src + '/css/index.css'),
+                this.destinationPath(src + '/css/index.css')
             );
             this.copy(
-                this.templatePath(_src + '/less/_common/reset.less'),
-                this.destinationPath(src + '/less/_common/reset.less')
+                this.templatePath(_src + '/css/_common/reset.css'),
+                this.destinationPath(src + '/css/_common/reset.css')
             );
-        }else{
+        }
+        if (this.css==='sass'){
             mkdirp(src + "/sass");
             mkdirp(src + "/sass/_common");
             this.copy(
