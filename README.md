@@ -8,7 +8,7 @@
 
 - cssnext,sass选择
 - jshint语法检查
-- requirejs模块编译
+- requirejs模块编译,使用方式看下面示例
 - 静态服务器,在`dist`目录
 - m 端页面
 - 增加`js,css`的`md5`版本号
@@ -51,6 +51,15 @@
 
 - 默认设计稿宽度为`640`,可以修改页面的`data-use-rem`属性
 - 单位书写方式`20px`,修改为`_(20)` 
+
+### 4. `requirejs` 使用方式
+```
+require(['./test']);
+$(function() {
+    console.log('wsss khello');
+});
+```
+> `require`必须带着中括号,然后把内容进行替换
 
 ## Getting Started
 
